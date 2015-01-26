@@ -68,7 +68,7 @@ func (gsp *genericServersProvider) AssociateFloatingIp(serverId string, ip Float
 
 func (gsp *genericServersProvider) DeleteFloatingIp(ip FloatingIp) error {
 	return gsp.context.WithReauth(gsp.access, func() error {
-		ep := fmt.Sprintf("%s/os-floating-ips/%d", gsp.endpoint, ip.Id)
+		ep := fmt.Sprintf("%s/os-floating-ips/%s", gsp.endpoint, ip.Id)
 		return perigee.Delete(ep, perigee.Options{
 			CustomClient: gsp.context.httpClient,
 			MoreHeaders: map[string]string{
@@ -80,7 +80,7 @@ func (gsp *genericServersProvider) DeleteFloatingIp(ip FloatingIp) error {
 }
 
 type FloatingIp struct {
-	Id         int    `json:"id"`
+	Id         string `json:"id"`
 	Pool       string `json:"pool"`
 	Ip         string `json:"ip"`
 	FixedIp    string `json:"fixed_ip"`
